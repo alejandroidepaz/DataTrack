@@ -1,23 +1,25 @@
-import React, { Component } from "react";
+import React from "react";
 import {
-  Button,
   Image,
   StyleSheet,
   Text,
-  ScrollView,
   View
 } from "react-native";
 import ChartIcon from "./ChartIcon";
 
 const LOGO = require('../assets/app_logo.png');
 
-const Home = ({ setCurrentPage }) => {
+type IProps = {
+  navigation: object
+}
+
+const Home = ({ navigation } : IProps) => {
   const goToChart = () => {
-    setCurrentPage("chart");
+    navigation.navigate('Chart');
   };
 
   return (
-    <ScrollView style={styles.app}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Image
           accessibilityLabel="App Logo"
@@ -34,14 +36,14 @@ const Home = ({ setCurrentPage }) => {
       <ChartIcon title={"Create new..."} goToChart={goToChart} />
       <View />
       <View />
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  app: {
-    marginHorizontal: "auto",
-    maxWidth: 500
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff'
   },
   logo: {
     height: 150,

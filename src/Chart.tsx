@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, ScrollView, Button, TextInput } from "react-native";
+import { Text, TextInput, View, StyleSheet } from "react-native";
 import ChartDisplay from "./ChartDisplay";
 import StatsDisplay from "./StatisticsDisplay";
 
@@ -18,7 +18,7 @@ function parseData(string) {
   return parsed_arr;
 }
 
-const ChartPage = ({ setCurrentPage }) => {
+const ChartPage = () => {
   const [x_input, set_xInput] = useState("");
   const [y_input, set_yInput] = useState("");
   const [x_axis, set_xAxis] = useState("x");
@@ -29,21 +29,15 @@ const ChartPage = ({ setCurrentPage }) => {
   // console.log(x_input);
   //console.log(parseData(y_input));
   return (
-    <ScrollView>
-      <Button
-        onPress={() => {
-          setCurrentPage("Home");
-        }}
-        title="Back"
-      />
-      <ChartDisplay
-        x_values={parseData(x_input)}
-        y_values={parseData(y_input)}
-        x_axis={x_axis}
-        y_axis={y_axis}
-        chart_title={chart_title}
-        chart_type={chart_type}
-      />
+    <View style={styles.container}>
+      {/* <ChartDisplay
+          x_values={parseData(x_input)}
+          y_values={parseData(y_input)}
+          x_axis={x_axis}
+          y_axis={y_axis}
+          chart_title={chart_title}
+          chart_type={chart_type}
+      /> */}
       <Text>Please Provide Your Data Below</Text>
       <TextInput
         style={{ height: 40 }}
@@ -58,7 +52,15 @@ const ChartPage = ({ setCurrentPage }) => {
         defaultValue={y_input}
       />
       <StatsDisplay y_values={parseData(y_input)} />
-    </ScrollView>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff"
+  }
+})
+
 export default ChartPage;
