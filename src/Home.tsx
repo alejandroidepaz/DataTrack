@@ -18,7 +18,6 @@ type IProps = {
 const Home = ({ navigation } : IProps) => {
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
-  console.info(windowHeight);
   const style = styles(windowWidth, windowHeight);
   const goToChart = () => {
     navigation.navigate('Chart');

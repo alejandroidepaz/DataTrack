@@ -4,7 +4,6 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 const ChartIcon = ({ title, goToChart }) => {
   const windowWidth = useWindowDimensions().width;
-  console.info(windowWidth);
   const windowHeight = useWindowDimensions().height;
   const style = styles(windowWidth, windowHeight);
   return (
