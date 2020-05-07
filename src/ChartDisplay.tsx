@@ -20,40 +20,37 @@ const ChartDisplay = ({
   
   var chart_elem;
 
+  const chartConfig = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+  };
+
+  const user_data = {
+    labels: x_values,
+    datasets: [
+      {
+        data: y_values
+      }
+    ]
+  }
+
   switch (chart_type) {
     case "line":
       chart_elem = (
         <LineChart
-        data={{
-          labels: x_values,
-          datasets: [
-            {
-              data: y_values
-            }
-          ]
-        }}
+        data={user_data}
         width={Dimensions.get("window").width} // from react-native
         height={220}
-        yAxisLabel="$"
-        yAxisSuffix="k"
+        yAxisLabel=""
+        yAxisSuffix={y_axis}
         yAxisInterval={1} // optional, defaults to 1
-        chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#ffa726"
-          }
-        }}
-        bezier
+        chartConfig={chartConfig}
         style={{
           marginVertical: 8,
           borderRadius: 16
@@ -61,15 +58,35 @@ const ChartDisplay = ({
       />
       );
       break;
-    case "bar_graph":
-      chart_elem = <View />;
+    case "bar":
+      chart_elem = <View><Text>Bar Graph Here</Text></View>;
       break;
     case "histogram":
-      chart_elem = <View />;
+      chart_elem = <View><Text>Histogram Here</Text></View>;
       break;
     default:
-      chart_elem = <View />;
-      break;
+      chart_elem = (
+        <LineChart 
+        data={{
+          labels:["1", "2", "3"],
+          datasets: [
+            {
+              data: [1,2,3]
+            }
+          ]
+        }}
+        width={Dimensions.get("window").width} // from react-native
+        height={220}
+        yAxisLabel=""
+        yAxisSuffix={"kg"}
+        yAxisInterval={1} // optional, defaults to 1
+        chartConfig={chartConfig}
+        style={{
+          marginVertical: 8,
+          borderRadius: 16
+        }}
+      />
+      )
   }
 
   return (
