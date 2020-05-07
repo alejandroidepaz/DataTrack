@@ -3,7 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import Home from '../Home';
-import Chart from '../Chart';
+import Chart from '../pages/ChartPage';
 
 export default () => {
   let Navigation = createAppContainer(AppNavigator);

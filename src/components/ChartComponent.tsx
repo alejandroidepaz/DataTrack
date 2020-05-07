@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Text, TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
-import ChartDisplay from "./ChartDisplay";
-import StatsDisplay from "./StatisticsDisplay";
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, Button } from "react-native";
+import ChartDisplay from "../ChartDisplay";
+import StatsDisplay from "../StatisticsDisplay";
 
 function parseData(string) {
   // build an array using the ',' as the delimiter, map all elements to
@@ -18,7 +18,7 @@ function parseData(string) {
   return parsed_arr;
 }
 
-const ChartPage = () => {
+const Chart = ({ saveChart }) => {
   const [x_input, set_xInput] = useState("");
   const [y_input, set_yInput] = useState("");
   const [x_axis, set_xAxis] = useState("x");
@@ -82,6 +82,14 @@ const ChartPage = () => {
           editable={parseData(x_input).length > 0 ? true : false}
         />
         <StatsDisplay y_values={parseData(y_input)} />
+
+        <Button
+        title="Save Chart" 
+        onPress={() => {
+          console.log("Save Chart Pressed");
+          saveChart({title:chart_title,xValues:x_values, yValues:y_values, chartType:chart_type});
+        }}
+        />
       </View>
     </View>
   );
@@ -127,4 +135,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ChartPage;
+export default Chart;
