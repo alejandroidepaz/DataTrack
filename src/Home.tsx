@@ -3,9 +3,11 @@ import {
   Image,
   StyleSheet,
   Text,
-  View
+  View,
+  useWindowDimensions
 } from "react-native";
 import ChartIcon from "./ChartIcon";
+import { ScrollView } from "react-native-gesture-handler";
 
 const LOGO = require('../assets/app_logo.png');
 
@@ -14,33 +16,39 @@ type IProps = {
 }
 
 const Home = ({ navigation } : IProps) => {
+  const windowWidth = useWindowDimensions().width;
+  const windowHeight = useWindowDimensions().height;
+  const style = styles(windowWidth, windowHeight);
   const goToChart = () => {
     navigation.navigate('Chart');
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={style.container}>
+      <View style={style.header}>
         <Image
           accessibilityLabel="App Logo"
           source={LOGO}
           resizeMode="contain"
-          style={styles.logo}
+          style={style.logo}
         />
-        <Text style={styles.title}>DataTrack</Text>
+        <Text style={style.title}>DataTrack</Text>
       </View>
-      <Text style={styles.text}>
+      <Text style={style.text}>
         To get started, please select from the options below:{" "}
       </Text>
-      <View style={styles.chartGrid} />
-      <ChartIcon title={"Create new..."} goToChart={goToChart} />
-      <View />
-      <View />
+      <ScrollView style={style.chartGrid} contentContainerStyle={style.chartGridContainer}>
+        <ChartIcon title={"Create new..."} goToChart={goToChart} />
+        <ChartIcon title={"Chart 1"} goToChart={goToChart} />
+        <ChartIcon title={"Chart 2"} goToChart={goToChart} />
+        <ChartIcon title={"Chart 3"} goToChart={goToChart} />
+      </ScrollView>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = (windowWidth : number, windowHeight : number) => StyleSheet.create(
+  {
   container: {
     flex: 1,
     backgroundColor: '#ffffff'
@@ -74,9 +82,13 @@ const styles = StyleSheet.create({
   },
   chartGrid: {
     flex: 1,
-    flexDirection: "row"
-    // display: "inline-block"
-    // flexWrap: "wrap"
+    marginHorizontal: windowWidth / 12,
+    marginTop: 0.03 * windowHeight
+  },
+  chartGridContainer: {
+    flexDirection:'row',
+    justifyContent: "flex-start",
+    flexWrap: 'wrap',
   }
 });
 
