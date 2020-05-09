@@ -6,21 +6,24 @@ import {
   View,
   useWindowDimensions
 } from "react-native";
-import ChartIcon from "./ChartIcon";
+import ChartIcon from "../ChartIcon";
 import { ScrollView } from "react-native-gesture-handler";
+import Chart from "./ChartComponent";
 
-const LOGO = require('../assets/app_logo.png');
+const LOGO = require('../../assets/app_logo.png');
 
 type IProps = {
+  charts: Array<Chart>
   navigation: object
 }
 
-const Home = ({ navigation } : IProps) => {
+const Home = ({ navigation, charts } : IProps) => {
+  console.info(`In home componenet: ${charts.length}`);
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
   const style = styles(windowWidth, windowHeight);
-  const goToChart = () => {
-    navigation.navigate('Chart');
+  const goToChart = (chartId : String) => {
+    navigation.navigate('Chart', { id: chartId });
   };
 
   return (
@@ -38,10 +41,12 @@ const Home = ({ navigation } : IProps) => {
         To get started, please select from the options below:{" "}
       </Text>
       <ScrollView style={style.chartGrid} contentContainerStyle={style.chartGridContainer}>
-        <ChartIcon title={"Create new..."} goToChart={goToChart} />
-        <ChartIcon title={"Chart 1"} goToChart={goToChart} />
-        <ChartIcon title={"Chart 2"} goToChart={goToChart} />
-        <ChartIcon title={"Chart 3"} goToChart={goToChart} />
+        <ChartIcon title={"Create new..."} goToChart={goToChart} key={undefined} id={null}/>
+        {
+          charts.map(x => {
+            return <ChartIcon title={x.title} goToChart={goToChart} key={x.id} id={x.id} />
+          })
+        }
       </ScrollView>
     </View>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import Home from '../Home';
+import Home from '../pages/HomePage';
 import Chart from '../pages/ChartPage';
 
 export default () => {
