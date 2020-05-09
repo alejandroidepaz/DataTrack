@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
-const ChartIcon = ({ title, goToChart }) => {
+const ChartIcon = ({ title, goToChart, id }) => {
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
   const style = styles(windowWidth, windowHeight);
@@ -10,7 +10,7 @@ const ChartIcon = ({ title, goToChart }) => {
     <TouchableOpacity
       style={style.container}
       onPress={() => {
-        goToChart();
+        goToChart(id);
       }}
     >
       <FontAwesome5Icon name="chart-line" style={style.chartIcon} solid />

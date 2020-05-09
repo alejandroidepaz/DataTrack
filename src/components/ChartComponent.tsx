@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, Button } from "react-native";
+import {
+  Text,
+  TextInput,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView } from "react-native";
+  import { Button } from 'react-native-elements';
+
+  import { v4 as uuidv4 } from 'uuid';
+
 import ChartDisplay from "../ChartDisplay";
 import StatsDisplay from "../StatisticsDisplay";
 
@@ -18,7 +28,12 @@ function parseData(string) {
   return parsed_arr;
 }
 
-const Chart = ({ saveChart }) => {
+const Chart = ({ saveChart, deleteChart, navigation }) => {
+  let id = navigation.state.params.id;
+  if (!id) {
+    id = uuidv4();
+  }
+
   const [x_input, set_xInput] = useState("");
   const [y_input, set_yInput] = useState("");
   const [x_axis, set_xAxis] = useState("x");
@@ -35,7 +50,7 @@ const Chart = ({ saveChart }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <ChartDisplay
           x_values={x_values}
           y_values={y_values}
@@ -84,14 +99,29 @@ const Chart = ({ saveChart }) => {
         <StatsDisplay y_values={parseData(y_input)} />
 
         <Button
-        title="Save Chart" 
-        onPress={() => {
-          console.log("Save Chart Pressed");
-          saveChart({title:chart_title,xValues:x_values, yValues:y_values, chartType:chart_type});
-        }}
+          title="Save Chart"
+          style={styles.actionButtons}
+          onPress={async () => {
+            saveChart({
+              id: id,
+              title: chart_title,
+              xValues: x_values,
+              yValues: y_values,
+              chartType: chart_type
+            });
+          }}
+        />
+        <Button
+          title="Delete Chart"
+          style={styles.actionButtons}
+          buttonStyle={{ backgroundColor: "red" }}
+          onPress={async () => {
+            deleteChart(id);
+            navigation.navigate('Home');
+          }}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -132,6 +162,9 @@ const styles = StyleSheet.create({
 
   btn_text_unclicked: {
     color: "white"
+  },
+  actionButtons: {
+    margin: 10,
   }
 })
 

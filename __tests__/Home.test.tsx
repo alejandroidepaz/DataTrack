@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import Home from '../src/Home';
+import Home from '../src/components/HomeComponent';
 import { TouchableOpacity } from 'react-native';
 
 const promise = Promise.resolve('success')
