@@ -8,22 +8,23 @@ import {
 } from "react-native";
 import ChartIcon from "../ChartIcon";
 import { ScrollView } from "react-native-gesture-handler";
-import Chart from "./ChartComponent";
+//import Chart from "./ChartComponent";
 
 const LOGO = require('../../assets/app_logo.png');
 
 type IProps = {
-  charts: Array<Chart>
+  charts: object
   navigation: object
 }
 
 const Home = ({ navigation, charts } : IProps) => {
-  console.info(`In home componenet: ${charts.length}`);
+  //console.info(`In home componenet: ${charts.length}`);
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
   const style = styles(windowWidth, windowHeight);
-  const goToChart = (chartId : String) => {
-    navigation.navigate('Chart', { id: chartId });
+  const defaultChart : Chart = {id: "", title:"Your Chart", xValues:[1,2,3], yValues:[1,2,3], chartType:"line"}
+  const goToChart = (chartObj : Chart) => { // Should this be defined in ChartIcon? We pass the id as the prop to ChartIcon anyway, and then essentially rebuild this function there
+    navigation.navigate('Chart', { chart: chartObj}); // passing id allows us to render ChartComponent with data from the corresponding Chart object that's in our 'charts' array from the HomePage state 
   };
 
   return (
@@ -41,11 +42,14 @@ const Home = ({ navigation, charts } : IProps) => {
         To get started, please select from the options below:{" "}
       </Text>
       <ScrollView style={style.chartGrid} contentContainerStyle={style.chartGridContainer}>
-        <ChartIcon title={"Create new..."} goToChart={goToChart} key={undefined} id={null}/>
-        {
-          charts.map(x => {
-            return <ChartIcon title={x.title} goToChart={goToChart} key={x.id} id={x.id} />
-          })
+        <ChartIcon title={"Create new..."} goToChart={goToChart} key={undefined} chart={defaultChart}/>
+        { 
+        //{id:charts[key].id, title:charts[key].title, xValues:charts[key].xValues, yValues:charts[key].yValues, chartType:charts[key].chartType}
+          Object.keys(charts).map(key => {
+            return (
+              <ChartIcon title={charts[key].title} goToChart={goToChart} key={charts[key].id} chart={charts[key]} />
+            )
+        })
         }
       </ScrollView>
     </View>

@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 
 import Home from '../components/HomeComponent';
 
-const mapStateToProps = (state : any) => {(
-  {
+// The 'Home' page state maintains an array of all of the charts that a user has created
+const mapStateToProps = (state : any) => {
+  //console.log(JSON.stringify(state, null, 2))
+  return {
     charts: state.charts
   }
-)}
+}
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(Home); // pass the state constructed above as props to the Home component, and render the component. 

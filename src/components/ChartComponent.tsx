@@ -13,10 +13,10 @@ import {
 import ChartDisplay from "../ChartDisplay";
 import StatsDisplay from "../StatisticsDisplay";
 
-function parseData(string) {
+function parseData(string : string) {
   // build an array using the ',' as the delimiter, map all elements to
   // integers, removing those which mapped to NaN
-  var parsed_arr = [];
+  var parsed_arr : Array<Number> = [];
   try {
     parsed_arr = string
       .split(",")
@@ -29,17 +29,21 @@ function parseData(string) {
 }
 
 const Chart = ({ saveChart, deleteChart, navigation }) => {
-  let id = navigation.state.params.id;
+  let id = navigation.state.params.chart.id;
+  let xVals = navigation.state.params.chart.xValues;
+  let yVals = navigation.state.params.chart.yValues;
+  let title = navigation.state.params.chart.chartTitle;
+  let type = navigation.state.params.chart.chartType;
   if (!id) {
     id = uuidv4();
   }
 
-  const [x_input, set_xInput] = useState("");
-  const [y_input, set_yInput] = useState("");
+  const [x_input, set_xInput] = useState(xVals.toString());
+  const [y_input, set_yInput] = useState(yVals.toString());
   const [x_axis, set_xAxis] = useState("x");
   const [y_axis, set_yAxis] = useState("");
-  const [chart_title, set_chartTitle] = useState("Your Chart");
-  const [chart_type, set_chartType] = useState("line");
+  const [chart_title, set_chartTitle] = useState(title);
+  const [chart_type, set_chartType] = useState(type);
 
   // react-native-chart-kit cannot render a chart without x-axis and y-axis values
   var x_values = parseData(x_input);

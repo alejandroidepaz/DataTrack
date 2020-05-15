@@ -1,11 +1,11 @@
 type Chart = {
-    id: String,
-    title : String,
+    id: string,
+    title : string,
     xValues : Array<Number>,
     yValues : Array<Number>,
-    chartType : String 
+    chartType : string 
 }
 
 interface ChartAction extends Chart {
-    type: String
+    type: string
 }

@@ -1,2 +1,4 @@
 export const SAVE_CHART = "SAVE_CHART";
 export const DELETE_CHART = "DELETE_CHART";
+export const RECEIVE_CHARTS = "RECEIVE_CHARTS";
+export const REQUEST_CHARTS = "REQUEST_CHARTS";
