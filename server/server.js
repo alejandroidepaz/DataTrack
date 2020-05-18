@@ -7,6 +7,9 @@ const app = express();
 // Static pages
 app.use(express.static('public'));
 
+// Create application/x-www-form-urlencoded parser
+const urlencodedParser = bodyParser.urlencoded({ extended: true });
+
 // Create application/json parser
 const jsonParser = bodyParser.json();
 
@@ -27,10 +30,27 @@ app.get('/getCharts', (req, res) => {
 
 })
 
-// TODO: add new charts to db
-app.post('/addChart', (req, res) => {
-    var chart = req.params;
-    console.log(chart);
+// Add new a new chart or update an existing chart in db
+app.post('/saveChart', jsonParser, (req, res) => {
+    var new_chart = req.body;
+    if (!new_chart){
+        res.sendStatus(400);
+    } else{
+
+        let chartUpdateQuery = {"$set": {}}
+        chartUpdateQuery.$set["charts." + new_chart.id] = new_chart // construct the key within the DB object that we will be updating
+
+        //console.log(`The following chart was saved\n ${JSON.stringify(new_chart, null, 2)}`);
+        mongodb.userCharts.update({username:"adp_cudi"}, chartUpdateQuery, function(err, obj){
+
+            if (err){
+                res.send(err);
+            } else{
+                res.json({"status": "success"});
+            }
+        })
+
+    }
 });
 
 // TODO: delete charts from db

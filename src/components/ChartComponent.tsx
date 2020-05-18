@@ -28,11 +28,11 @@ function parseData(string : string) {
   return parsed_arr;
 }
 
-const Chart = ({ saveChart, deleteChart, navigation }) => {
+const Chart = ({ saveUserChart, deleteChart, navigation }) => {
   let id = navigation.state.params.chart.id;
   let xVals = navigation.state.params.chart.xValues;
   let yVals = navigation.state.params.chart.yValues;
-  let title = navigation.state.params.chart.chartTitle;
+  let title = navigation.state.params.chart.title;
   let type = navigation.state.params.chart.chartType;
   if (!id) {
     id = uuidv4();
@@ -100,13 +100,19 @@ const Chart = ({ saveChart, deleteChart, navigation }) => {
           defaultValue={y_input}
           editable={parseData(x_input).length > 0 ? true : false}
         />
+        <TextInput
+          style={{ height: 40 }}
+          placeholder="Title"
+          onChangeText={chart_title => set_chartTitle(chart_title)}
+          defaultValue={chart_title}
+        />
         <StatsDisplay y_values={parseData(y_input)} />
 
         <Button
           title="Save Chart"
           style={styles.actionButtons}
           onPress={async () => {
-            saveChart({
+            saveUserChart({
               id: id,
               title: chart_title,
               xValues: x_values,

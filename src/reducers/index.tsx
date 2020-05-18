@@ -8,8 +8,9 @@ type IState = {
 const defaultState = {
 
     isFetching: false,
+    savingChart: false,
     username: "adp_cudi",
-    charts: {}
+    charts: {} //this is actually updated on startup by the store making a call to /getCharts
 };
 
 const DEFAULT_STATE : IState = {
@@ -64,6 +65,7 @@ const DEFAULT_STATE : IState = {
 //     }
 // }
 
+// createReducer gives us syntactic sugar for updating the state, allowing us to mock 'mutating it directly' without actually doing so. 
 const rootReducer = createReducer(defaultState, {
 
     REQUEST_CHARTS: (state, action) => {
@@ -80,8 +82,13 @@ const rootReducer = createReducer(defaultState, {
 
     },
 
+    SAVING_CHART: (state, action) => {
+        console.info(`SAVING chart: ${action.id}`);
+        state.savingChart = true;
+    },
+
     SAVE_CHART: (state, action) => {
-        console.info(`Saving chart ${action.id}`);
+        console.info(`Chart with id: ${action.id} has been saved`);
         let c =  {
             id: action.id,
             title: action.title,
@@ -91,6 +98,7 @@ const rootReducer = createReducer(defaultState, {
         }
 
         state.charts[action.id] = c;
+        state.savingChart = false;
         
         return state
     },

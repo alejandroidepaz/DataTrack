@@ -1,5 +1,14 @@
-import { SAVE_CHART, DELETE_CHART, RECEIVE_CHARTS, REQUEST_CHARTS } from './actionTypes';
+import { SAVING_CHART, SAVE_CHART, DELETE_CHART, RECEIVE_CHARTS, REQUEST_CHARTS } from './actionTypes';
 import { fetch } from 'cross-fetch';
+
+export const savingChart = (chartId : string) => {
+
+    return {
+
+        type: SAVING_CHART,
+        id: chartId
+    }
+}
 
 export const saveChart = (chart : Chart ) => ({ // this action needs to include the statistics data as part of its payload
     type: SAVE_CHART,
@@ -32,6 +41,7 @@ export const receiveCharts = (username : string, json) => {
     }
   }
 
+// Action for getting all user charts
 export function fetchCharts(username : string) {
 // Thunk middleware knows how to handle functions.
 // It passes the dispatch method as an argument to the function,
@@ -52,8 +62,39 @@ export function fetchCharts(username : string) {
                     error => console.log(`The following error occured: ${error}`)
                 )
                 .then(data => {
-                    //console.log("DATA IN FETCH: ", JSON.stringify(data, null, 2));
+                    //This function responsible for dispatching the official action once data is received from the API
                     dispatch(receiveCharts(username, data));
                 })
     }
 }
+
+// Action for saving user chart. It must update the state with the new chart, as well as insert/update the new chart in the DB
+export function saveUserChart(chart : Chart) {
+    
+        return function (dispatch) {
+
+            // First dispatch: the app state is updated to inform that the API call is starting.
+            dispatch(savingChart(chart.id))
+
+            // build request payload
+            let jsonChart = JSON.stringify(chart);
+            let postData = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: jsonChart
+            }
+            return fetch('http://127.0.0.1:3000/saveChart', postData)
+                    .then(
+                        response => response.json(),
+                        error => console.log(`The following error occured: ${error}`)
+                    )
+                    .then(data => {
+                        //This function responsible for dispatching the official action once data is received from the API.
+                        // This adds the new chart (or updates an existing chart) in the 'charts' object held by state
+                        dispatch(saveChart(chart));
+                    })
+        }
+    }

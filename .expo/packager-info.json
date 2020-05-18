@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 17737,
-  "expoServerNgrokUrl": "https://w9-k5y.anonymous.datatrack.exp.direct",
-  "packagerNgrokUrl": "https://packager.w9-k5y.anonymous.datatrack.exp.direct",
-  "ngrokPid": 17747,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
