@@ -9,6 +9,7 @@ const defaultState = {
 
     isFetching: false,
     savingChart: false,
+    deletingChart: false,
     username: "adp_cudi",
     charts: {} //this is actually updated on startup by the store making a call to /getCharts
 };
@@ -65,7 +66,8 @@ const DEFAULT_STATE : IState = {
 //     }
 // }
 
-// createReducer gives us syntactic sugar for updating the state, allowing us to mock 'mutating it directly' without actually doing so. 
+// createReducer gives us syntactic sugar for updating the state, allowing us to mock 'mutating it directly' without actually doing so.
+// Everytime a saveUserChart/deleteUserChart action is envoked by our Chart component, this rootReducer function is called by redux.  
 const rootReducer = createReducer(defaultState, {
 
     REQUEST_CHARTS: (state, action) => {
@@ -73,18 +75,21 @@ const rootReducer = createReducer(defaultState, {
         console.log(`REQUESTING Charts for: ${action.username}`);
         state.username = action.username;
         state.isFetching = true;
+
     },
 
     RECEIVE_CHARTS: (state, action) => {
 
         console.log(`RECEVING Charts for ${action.username} | At time ${action.receivedAt}`)
         state.charts = action.charts;
+        state.isFetching = false;
 
     },
 
     SAVING_CHART: (state, action) => {
         console.info(`SAVING chart: ${action.id}`);
         state.savingChart = true;
+
     },
 
     SAVE_CHART: (state, action) => {
@@ -99,20 +104,27 @@ const rootReducer = createReducer(defaultState, {
 
         state.charts[action.id] = c;
         state.savingChart = false;
-        
-        return state
+
+    },
+
+    DELETING_CHART: (state, action) => {
+
+        console.info(`DELETING chart with id: ${action.id}`)
+        state.deletingChart = true;
+
     },
 
     DELETE_CHART: (state, action) => {
-        console.info(`Removing chart ${action.id}`);
-        //console.info(`In delete: ${state.charts.filter(c => c.id != action.id).length}`);
+
+        console.info(`DELETED chart with id: ${action.id}`);
         delete state.charts[action.id];
-        return state
+        state.deletingChart = false
+
     },
       
     default: () => {
         console.info("Ooops, we're in the default action!");
-        return defaultState
+
     }
   })
 

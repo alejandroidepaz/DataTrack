@@ -54,10 +54,25 @@ app.post('/saveChart', jsonParser, (req, res) => {
 });
 
 // TODO: delete charts from db
-app.post('/deleteChart', (req, res) => {
+app.post('/deleteChart', jsonParser, (req, res) => {
 
-    var chartToDelete = req.params;
-    console.log(chartToDelete);
+    var body = req.body;
+
+    if (!body){
+        res.sendStatus(400)
+    }else{
+        let query = {"$unset": {}}
+        query.$unset["charts." + body.id] = ""; // build query for deleting nested chart object
+
+        mongodb.userCharts.update({username: "adp_cudi"}, query, function(err, obj){
+
+            if (err){
+                res.send(err)
+            } else{
+                res.json({"status":"success"})
+            }
+        })
+    }
 })
 
 

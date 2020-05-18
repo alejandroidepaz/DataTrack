@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  useWindowDimensions
+  useWindowDimensions,
+  ActivityIndicator
 } from "react-native";
 import ChartIcon from "../ChartIcon";
 import { ScrollView } from "react-native-gesture-handler";
@@ -15,9 +16,10 @@ const LOGO = require('../../assets/app_logo.png');
 type IProps = {
   charts: object
   navigation: object
+  isFetching: boolean
 }
 
-const Home = ({ navigation, charts } : IProps) => {
+const Home = ({ navigation, charts, isFetching } : IProps) => {
   //console.info(`In home componenet: ${charts.length}`);
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
@@ -41,6 +43,7 @@ const Home = ({ navigation, charts } : IProps) => {
       <Text style={style.text}>
         To get started, please select from the options below:{" "}
       </Text>
+      <ActivityIndicator size="large" color="#000000" animating={isFetching} />
       <ScrollView style={style.chartGrid} contentContainerStyle={style.chartGridContainer}>
         <ChartIcon title={"Create new..."} goToChart={goToChart} key={undefined} chart={defaultChart}/>
         { 

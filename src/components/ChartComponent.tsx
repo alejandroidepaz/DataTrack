@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
   ScrollView } from "react-native";
   import { Button } from 'react-native-elements';
 
@@ -28,7 +29,7 @@ function parseData(string : string) {
   return parsed_arr;
 }
 
-const Chart = ({ saveUserChart, deleteChart, navigation }) => {
+const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deletingChart }) => {
   let id = navigation.state.params.chart.id;
   let xVals = navigation.state.params.chart.xValues;
   let yVals = navigation.state.params.chart.yValues;
@@ -63,7 +64,8 @@ const Chart = ({ saveUserChart, deleteChart, navigation }) => {
           chart_title={chart_title}
           chart_type={chart_type}
       />
-      <Text style={{fontWeight:"bold"}}>Please Provide Your Data Below</Text>
+      <ActivityIndicator size="large" color="#000000" animating={savingChart || deletingChart} />
+      <Text style={{fontWeight:"bold", textAlign:"center", fontSize:16}}>Please Provide Your Data Below</Text>
         
       <View style={{flexDirection: 'row', justifyContent:"center"}}>
         <TouchableOpacity
@@ -126,7 +128,7 @@ const Chart = ({ saveUserChart, deleteChart, navigation }) => {
           style={styles.actionButtons}
           buttonStyle={{ backgroundColor: "red" }}
           onPress={async () => {
-            deleteChart(id);
+            deleteUserChart(id);
             navigation.navigate('Home');
           }}
         />

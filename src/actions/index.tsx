@@ -1,4 +1,4 @@
-import { SAVING_CHART, SAVE_CHART, DELETE_CHART, RECEIVE_CHARTS, REQUEST_CHARTS } from './actionTypes';
+import { SAVING_CHART, SAVE_CHART, DELETING_CHART, DELETE_CHART, RECEIVE_CHARTS, REQUEST_CHARTS } from './actionTypes';
 import { fetch } from 'cross-fetch';
 
 export const savingChart = (chartId : string) => {
@@ -19,6 +19,14 @@ export const saveChart = (chart : Chart ) => ({ // this action needs to include 
     chartType: chart.chartType
 });
 
+export const deletingChart = (chartId: string) => {
+
+    return{
+        type: DELETING_CHART,
+        id: chartId
+    }
+}
+
 export const deleteChart = (chartId : string) => ({
     type: DELETE_CHART,
     id: chartId
@@ -32,7 +40,7 @@ export const requestCharts = (username : string) => {
     }
 }
 
-export const receiveCharts = (username : string, json) => {
+export const receiveCharts = (username : string, json : object) => {
     return {
       type: RECEIVE_CHARTS,
       username: username,
@@ -68,7 +76,7 @@ export function fetchCharts(username : string) {
     }
 }
 
-// Action for saving user chart. It must update the state with the new chart, as well as insert/update the new chart in the DB
+// Action for saving user chart. It will update the state with the new chart, as well as insert/update the new chart in the DB
 export function saveUserChart(chart : Chart) {
     
         return function (dispatch) {
@@ -98,3 +106,36 @@ export function saveUserChart(chart : Chart) {
                     })
         }
     }
+
+
+// Action for deleting a user chart. It will update the state by removing the specified chart, as well as delete the chart from the DB
+export function deleteUserChart(id : string) {
+    
+    return function (dispatch) {
+
+        // First dispatch: the app state is updated to inform that the API call is starting.
+        dispatch(deletingChart(id))
+
+        // build request payload
+        let chartToDelete = JSON.stringify({"id":id});
+        console.log("CHART TO DELETE: ", chartToDelete);
+        let postData = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: chartToDelete
+        }
+        return fetch('http://127.0.0.1:3000/deleteChart', postData)
+                .then(
+                    response => response.json(),
+                    error => console.log(`The following error occured: ${error}`)
+                )
+                .then(data => {
+                    //This function responsible for dispatching the official action once data is received from the API.
+                    // This adds the new chart (or updates an existing chart) in the 'charts' object held by state
+                    dispatch(deleteChart(id));
+                })
+    }
+}

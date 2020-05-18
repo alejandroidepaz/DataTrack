@@ -7,7 +7,8 @@ import Home from '../components/HomeComponent';
 const mapStateToProps = (state : any) => {
   //console.log(JSON.stringify(state, null, 2))
   return {
-    charts: state.charts
+    charts: state.charts,
+    isFetching: state.isFetching
   }
 }
 

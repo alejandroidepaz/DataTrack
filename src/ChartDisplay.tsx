@@ -7,7 +7,7 @@ import {
   ContributionGraph,
   StackedBarChart
 } from "react-native-chart-kit";
-import { Text, View, Dimensions } from "react-native";
+import { Text, View, Dimensions, StyleSheet } from "react-native";
 
 const ChartDisplay = ({
   x_values,
@@ -91,9 +91,17 @@ const ChartDisplay = ({
 
   return (
     <View>
-      <Text>{chart_title}</Text>
+      <Text style={styles.chartTitle}>{chart_title}</Text>
       {chart_elem}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  chartTitle: {
+    textAlign: "center",
+    fontSize: 24
+  }
+});
+
 export default ChartDisplay;
