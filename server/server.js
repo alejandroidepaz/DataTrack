@@ -75,8 +75,6 @@ app.post('/deleteChart', jsonParser, (req, res) => {
     }
 })
 
-
-
 // Start server
 const listenIP = '127.0.0.1';
 const listenPort = process.env.PORT || 3000

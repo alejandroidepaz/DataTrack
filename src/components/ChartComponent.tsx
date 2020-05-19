@@ -21,7 +21,7 @@ function parseData(string : string) {
   try {
     parsed_arr = string
       .split(",")
-      .map(str => parseInt(str, 10))
+      .map(str => parseFloat(str))
       .filter(val => !isNaN(val));
   } catch (err) {
     alert("Data not correctly formatted!");

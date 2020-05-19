@@ -118,7 +118,7 @@ export function deleteUserChart(id : string) {
 
         // build request payload
         let chartToDelete = JSON.stringify({"id":id});
-        console.log("CHART TO DELETE: ", chartToDelete);
+
         let postData = {
             method: 'POST',
             headers: {

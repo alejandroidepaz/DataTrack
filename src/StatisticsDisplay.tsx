@@ -12,7 +12,7 @@ function median(arr) {
         ? sorted_arr[mid_index]
         : (sorted_arr[mid_index - 1] + sorted_arr[mid_index]) / 2;
   }
-  return median;
+  return median.toFixed(2);
 }
 
 function mode(arr) {
@@ -20,7 +20,8 @@ function mode(arr) {
   var modes = new Set();
   var highest_freq = 0;
   if (arr.length > 0) {
-    for (const val of arr) {
+    for (var val of arr) {
+      val = val.toFixed(2);
       if (frequency_map[val] === undefined) {
         frequency_map[val] = 0;
       } else {
@@ -35,7 +36,8 @@ function mode(arr) {
       }
     }
   }
-  return modes;
+
+  return Array.from(modes).join(", ");
 }
 
 function mean(arr) {
@@ -49,7 +51,7 @@ function mean(arr) {
     mean = sum / arr.length;
   }
 
-  return mean;
+  return mean.toFixed(2);
 }
 
 const StatsDisplay = ({ y_values }) => {
