@@ -46,7 +46,7 @@ const Login = ({navigation, fetchCharts}) => {
     };
 
     return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
         <View>
             <Image
             accessibilityLabel="App Logo"
@@ -55,13 +55,13 @@ const Login = ({navigation, fetchCharts}) => {
             style={styles.logo}
             />
         </View>
-        <Text style={styles.text}>Please Sign In</Text>
-        <Button 
-            style={styles.button}
-            title="Sign In with Google "
-            onPress={signInWithGoogleAsync}
-        />
-    </ScrollView>
+        <View style={styles.signInForm}>
+            <Text style={styles.text}>Please Sign In</Text>
+            <TouchableOpacity style={styles.button} onPress={signInWithGoogleAsync}> 
+                <Text style={{color:"white", fontSize:20}}>Log In With Google</Text> 
+            </TouchableOpacity>
+        </View>
+    </View>
     );
 }
     
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         height: 200,
+        marginTop: 100,
         alignSelf: "center"
     },
     text: {
@@ -80,7 +81,16 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     button: {
-        margin: 10
+        margin: 15,
+        padding: 10,
+        backgroundColor: "#243aff",
+        alignItems:"center",
+        borderRadius: 15,
+        marginLeft: 35,
+        marginRight: 35
+    },
+    signInForm: {
+        marginTop: 20
     }
 });
     
