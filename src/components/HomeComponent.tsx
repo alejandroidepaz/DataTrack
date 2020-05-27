@@ -5,13 +5,16 @@ import {
   Text,
   View,
   useWindowDimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Button
 } from "react-native";
-import ChartIcon from "../ChartIcon";
+import ChartIcon from "./ChartIcon";
 import { ScrollView } from "react-native-gesture-handler";
-//import Chart from "./ChartComponent";
+import { config } from "../login"
+import * as Google from 'expo-google-app-auth';
+import { Action } from "redux";
 
-const LOGO = require('../../assets/app_logo.png');
+const LOGO = require('../../assets/datatrack_logo.png');
 
 type IProps = {
   charts: object
@@ -20,6 +23,22 @@ type IProps = {
 }
 
 const Home = ({ navigation, charts, isFetching } : IProps) => {
+
+  const username = navigation.state.params.username;
+  const accessToken = navigation.state.params.accessToken
+
+  const GoogleSignOutAsync = async () => {
+    try{
+      const result = await Google.logOutAsync({ accessToken, ...config });
+      navigation.navigate("Login");
+    } catch (e) {
+        console.log('Error with logout', e);
+        return { error: true };
+    }
+
+  }
+
+
   //console.info(`In home componenet: ${charts.length}`);
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
@@ -31,6 +50,10 @@ const Home = ({ navigation, charts, isFetching } : IProps) => {
 
   return (
     <View style={style.container}>
+      <Button
+        title="Sign Out"
+        onPress={GoogleSignOutAsync}
+      />
       <View style={style.header}>
         <Image
           accessibilityLabel="App Logo"
@@ -38,7 +61,7 @@ const Home = ({ navigation, charts, isFetching } : IProps) => {
           resizeMode="contain"
           style={style.logo}
         />
-        <Text style={style.title}>DataTrack</Text>
+      { /*<Text style={style.title}>DataTrack</Text> */}
       </View>
       <Text style={style.text}>
         To get started, please select from the options below:{" "}
@@ -66,11 +89,12 @@ const styles = (windowWidth : number, windowHeight : number) => StyleSheet.creat
     backgroundColor: '#ffffff'
   },
   logo: {
-    height: 150,
+    height: 200,
     alignSelf: "center"
   },
   header: {
-    padding: 20
+    padding: 20,
+    margin: 20
   },
   title: {
     fontWeight: "bold",

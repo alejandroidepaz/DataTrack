@@ -11,8 +11,8 @@ import {
 
   import { v4 as uuidv4 } from 'uuid';
 
-import ChartDisplay from "../ChartDisplay";
-import StatsDisplay from "../StatisticsDisplay";
+import ChartDisplay from "./ChartDisplay";
+import StatsDisplay from "./StatisticsDisplay";
 
 function parseData(string : string) {
   // build an array using the ',' as the delimiter, map all elements to
@@ -29,7 +29,8 @@ function parseData(string : string) {
   return parsed_arr;
 }
 
-const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deletingChart }) => {
+const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deletingChart, currentUser }) => {
+
   let id = navigation.state.params.chart.id;
   let xVals = navigation.state.params.chart.xValues;
   let yVals = navigation.state.params.chart.yValues;
@@ -120,7 +121,7 @@ const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deleti
               xValues: x_values,
               yValues: y_values,
               chartType: chart_type
-            });
+            }, currentUser);
           }}
         />
         <Button
@@ -128,7 +129,7 @@ const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deleti
           style={styles.actionButtons}
           buttonStyle={{ backgroundColor: "red" }}
           onPress={async () => {
-            deleteUserChart(id);
+            deleteUserChart(id, currentUser);
             navigation.navigate('Home');
           }}
         />

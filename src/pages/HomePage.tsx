@@ -1,6 +1,4 @@
-import React from 'react';
 import { connect } from 'react-redux';
-
 import Home from '../components/HomeComponent';
 
 // The 'Home' page state maintains an array of all of the charts that a user has created

@@ -11,8 +11,10 @@ function median(arr) {
       sorted_arr.length % 2 !== 0
         ? sorted_arr[mid_index]
         : (sorted_arr[mid_index - 1] + sorted_arr[mid_index]) / 2;
+
+    median = median.toFixed(2)
   }
-  return median.toFixed(2);
+  return median;
 }
 
 function mode(arr) {

@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import Home from '../pages/HomePage';
 import Chart from '../pages/ChartPage';
+import Login from '../pages/LoginPage';
 
 export default () => {
   let Navigation = createAppContainer(AppNavigator);
@@ -14,6 +15,12 @@ export default () => {
 
 const AppNavigator = createStackNavigator(
   {
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
     Home: {
       screen: Home,
       navigationOptions: {
@@ -36,6 +43,6 @@ const AppNavigator = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Login',
   }
 );

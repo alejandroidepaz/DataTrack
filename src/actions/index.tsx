@@ -61,40 +61,51 @@ export function fetchCharts(username : string) {
 
         // The function called by the thunk middleware can return a value,
         // that is passed on as the return value of the dispatch method.
+        let user = JSON.stringify({username:username});
 
-        // In this case, we return a promise to wait for.
-        // This is not required by thunk middleware, but it is convenient for us.
-        return fetch('http://127.0.0.1:3000/getCharts')
+        let postData = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: user
+        };
+        return fetch('http://127.0.0.1:3000/getCharts', postData)
                 .then(
                     response => response.json(),
                     error => console.log(`The following error occured: ${error}`)
                 )
                 .then(data => {
                     //This function responsible for dispatching the official action once data is received from the API
-                    dispatch(receiveCharts(username, data));
+                    if (!data){
+                        console.info("Failed to Retrieve Charts For: ", username);
+                    } else{
+                        dispatch(receiveCharts(username, data));
+                    }
                 })
     }
 }
 
 // Action for saving user chart. It will update the state with the new chart, as well as insert/update the new chart in the DB
-export function saveUserChart(chart : Chart) {
+export function saveUserChart(chart : Chart, currentUser: string) {
     
         return function (dispatch) {
 
             // First dispatch: the app state is updated to inform that the API call is starting.
             dispatch(savingChart(chart.id))
-
+            
             // build request payload
-            let jsonChart = JSON.stringify(chart);
-            let postData = {
-                method: 'POST',
+            let jsonChart = JSON.stringify({chart:chart, username:currentUser});
+            let putData = {
+                method: 'PUT',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 },
                 body: jsonChart
             }
-            return fetch('http://127.0.0.1:3000/saveChart', postData)
+            return fetch('http://127.0.0.1:3000/saveChart', putData)
                     .then(
                         response => response.json(),
                         error => console.log(`The following error occured: ${error}`)
@@ -102,14 +113,18 @@ export function saveUserChart(chart : Chart) {
                     .then(data => {
                         //This function responsible for dispatching the official action once data is received from the API.
                         // This adds the new chart (or updates an existing chart) in the 'charts' object held by state
-                        dispatch(saveChart(chart));
+                        if (!data){
+                            console.info("Chart Failed to Save");
+                        } else{
+                            dispatch(saveChart(chart));
+                        }
                     })
         }
     }
 
 
 // Action for deleting a user chart. It will update the state by removing the specified chart, as well as delete the chart from the DB
-export function deleteUserChart(id : string) {
+export function deleteUserChart(id : string, currentUser: string) {
     
     return function (dispatch) {
 
@@ -117,10 +132,10 @@ export function deleteUserChart(id : string) {
         dispatch(deletingChart(id))
 
         // build request payload
-        let chartToDelete = JSON.stringify({"id":id});
+        let chartToDelete = JSON.stringify({id:id, username:currentUser});
 
         let postData = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
