@@ -62,7 +62,7 @@ export function fetchCharts(username : string) {
         // The function called by the thunk middleware can return a value,
         // that is passed on as the return value of the dispatch method.
         let user = JSON.stringify({username:username});
-
+        
         let postData = {
             method: 'POST',
             headers: {
@@ -71,7 +71,7 @@ export function fetchCharts(username : string) {
             },
             body: user
         };
-        return fetch('http://127.0.0.1:3000/getCharts', postData)
+        return fetch('http://10.0.0.225:3000/getCharts', postData)
                 .then(
                     response => response.json(),
                     error => console.log(`The following error occured: ${error}`)
@@ -105,7 +105,7 @@ export function saveUserChart(chart : Chart, currentUser: string) {
                 },
                 body: jsonChart
             }
-            return fetch('http://127.0.0.1:3000/saveChart', putData)
+            return fetch('http://10.0.0.225:3000/saveChart', putData)
                     .then(
                         response => response.json(),
                         error => console.log(`The following error occured: ${error}`)
@@ -142,7 +142,7 @@ export function deleteUserChart(id : string, currentUser: string) {
             },
             body: chartToDelete
         }
-        return fetch('http://127.0.0.1:3000/deleteChart', postData)
+        return fetch('http://10.0.0.225:3000/deleteChart', postData)
                 .then(
                     response => response.json(),
                     error => console.log(`The following error occured: ${error}`)

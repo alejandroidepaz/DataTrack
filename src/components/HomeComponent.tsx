@@ -30,6 +30,7 @@ const Home = ({ navigation, charts, isFetching } : IProps) => {
   const GoogleSignOutAsync = async () => {
     try{
       const result = await Google.logOutAsync({ accessToken, ...config });
+      console.info("Logout Successful For: ", username);
       navigation.navigate("Login");
     } catch (e) {
         console.log('Error with logout', e);

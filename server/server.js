@@ -19,17 +19,19 @@ var mongodb = mongojs("mongodb+srv://dataTrackAdmin:FalcoLombardi69!@cluster0-ze
 
 app.post('/getCharts', jsonParser, (req, res) => {
     var user = req.body;
-    console.log("CURRENT USER: ", user);
+    console.info(`Request body in /getCharts endpoint: ${JSON.stringify(user)}`);
     if (!user){
         res.sendStatus(400);
+
     } else{
 
         // Determine if the user already exists in the database
-        mongodb.userCharts.find(user, function(err, obj){
+        mongodb.userCharts.findOne(user, function(err, obj){
 
             if (err){
                 res.send(err);
             } else{
+                
                 let userCharts = {}
 
                 if (!obj){
@@ -38,7 +40,6 @@ app.post('/getCharts', jsonParser, (req, res) => {
                     let updateQuery = {username: user.username, charts:{}};
                     mongodb.userCharts.insert(updateQuery, function(err, obj){
                         if (err){
-                            console.info("ERROR ON INSERTION: ", err);
                             res.send(err);
                         } else{
                             console.info("Successfully Created New User");
@@ -46,12 +47,14 @@ app.post('/getCharts', jsonParser, (req, res) => {
                     });
 
                 } else{
-                    userCharts = obj[0].charts;
+                    console.info("CHARTS: ", obj);
+                    userCharts = obj.charts;
                 }
 
                 res.json(userCharts);
             }
         });
+        //res.json(userCharts);
     }
 
 })
@@ -105,7 +108,7 @@ app.put('/deleteChart', jsonParser, (req, res) => {
 })
 
 // Start server
-const listenIP = '127.0.0.1';
+const listenIP = '10.0.0.225';
 const listenPort = process.env.PORT || 3000
 app.listen(listenPort, listenIP, () => {
     console.log('App listening on ' + listenIP + ':' + listenPort);
