@@ -108,7 +108,7 @@ app.put('/deleteChart', jsonParser, (req, res) => {
 })
 
 // Start server
-const listenIP = '10.0.0.225';
+const listenIP = '192.168.0.15';
 const listenPort = process.env.PORT || 3000
 app.listen(listenPort, listenIP, () => {
     console.log('App listening on ' + listenIP + ':' + listenPort);
