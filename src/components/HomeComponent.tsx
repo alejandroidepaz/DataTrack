@@ -44,7 +44,7 @@ const Home = ({ navigation, charts, isFetching } : IProps) => {
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
   const style = styles(windowWidth, windowHeight);
-  const defaultChart : Chart = {id: "", title:"Your Chart", xValues:[1,2,3], yValues:[1,2,3], chartType:"line"}
+  const defaultChart : Chart = {id: "", title:"Your Chart", xValues:[], yValues:[], chartType:""}
   const goToChart = (chartObj : Chart) => { // Should this be defined in ChartIcon? We pass the id as the prop to ChartIcon anyway, and then essentially rebuild this function there
     navigation.navigate('Chart', { chart: chartObj}); // passing id allows us to render ChartComponent with data from the corresponding Chart object that's in our 'charts' array from the HomePage state 
   };

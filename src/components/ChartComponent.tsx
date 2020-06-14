@@ -51,8 +51,8 @@ const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deleti
   var x_values = parseData(x_input);
   var y_values = parseData(y_input);
   if (x_values.length == 0 || y_values.length == 0){
-    x_values = [1,2,3]
-    y_values = [1,2,3]
+    x_values = [0,1]
+    y_values = [0,1]
   }
 
   return (
