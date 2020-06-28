@@ -14,15 +14,21 @@ import {
 import ChartDisplay from "./ChartDisplay";
 import StatsDisplay from "./StatisticsDisplay";
 
-function parseData(string : string) {
+function parseData(string : string, yVals : boolean) {
   // build an array using the ',' as the delimiter, map all elements to
   // integers, removing those which mapped to NaN
-  var parsed_arr : Array<Number> = [];
+  var parsed_arr : Array<any> = [];
   try {
     parsed_arr = string
-      .split(",")
+      .trim()
+      .split(",");
+
+    if (yVals){
+      parsed_arr = parsed_arr
       .map(str => parseFloat(str))
       .filter(val => !isNaN(val));
+    }
+    
   } catch (err) {
     alert("Data not correctly formatted!");
   }
@@ -48,8 +54,8 @@ const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deleti
   const [chart_type, set_chartType] = useState(type);
 
   // react-native-chart-kit cannot render a chart without x-axis and y-axis values
-  var x_values = parseData(x_input);
-  var y_values = parseData(y_input);
+  var x_values = parseData(x_input, false);
+  var y_values = parseData(y_input, true);
   if (x_values.length == 0 || y_values.length == 0){
     x_values = [0,1]
     y_values = [0,1]
@@ -82,10 +88,10 @@ const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deleti
           <Text style={chart_type === "bar" ? {color:"black"} : {color:"white"}}> Bar </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.charttype_button, chart_type === "histogram" ? styles.btn_clicked : styles.btn_not_clicked]}
-          onPress={() => set_chartType("histogram")}
+          style={[styles.charttype_button, chart_type === "pie" ? styles.btn_clicked : styles.btn_not_clicked]}
+          onPress={() => set_chartType("pie")}
         >
-          <Text style={chart_type === "histogram" ? {color:"black"} : {color:"white"}}> Histogram </Text>
+          <Text style={chart_type === "pie" ? {color:"black"} : {color:"white"}}> Pie Chart </Text>
         </TouchableOpacity>
       </View>
 
@@ -101,7 +107,7 @@ const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deleti
           placeholder="Y Values"
           onChangeText={y_input => set_yInput(y_input)}
           defaultValue={y_input}
-          editable={parseData(x_input).length > 0 ? true : false}
+          editable={parseData(x_input, false).length > 0 ? true : false}
         />
         <TextInput
           style={{ height: 40 }}
@@ -109,7 +115,7 @@ const Chart = ({ saveUserChart, deleteUserChart, navigation, savingChart, deleti
           onChangeText={chart_title => set_chartTitle(chart_title)}
           defaultValue={chart_title}
         />
-        <StatsDisplay y_values={parseData(y_input)} />
+        <StatsDisplay y_values={parseData(y_input, true)} chart_type={chart_type}/>
 
         <Button
           title="Save Chart"

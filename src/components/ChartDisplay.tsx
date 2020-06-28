@@ -33,14 +33,37 @@ const ChartDisplay = ({
     useShadowColorFromDataset: false // optional
   };
 
-  const user_data = {
-    labels: x_values,
-    datasets: [
-      {
-        data: y_values
+  const piechart_colors = ["#FF0000", "#FF8000", "#FFFF00", "#00FF00", "#00FFFF", "#0000FF", "#7F00FF", "#FF00FF", "#FF007F", "#808080", "#000000", "#FFFFFF"]
+
+  if (chart_type === "pie"){
+    var user_data : any = [];
+    for (var i=0; i<x_values.length; i++){
+      
+      var color_index = i
+      if (i > 12){
+        color_index = i % 12
       }
-    ]
-  }
+
+      let metric_obj = 
+      {"name": x_values[i], 
+      "metric_value": y_values[i], 
+      legendFontSize: 15, 
+      legendFontColor: "#000000", 
+      color: piechart_colors[color_index]};
+      user_data.push(metric_obj);
+    };
+  } else{
+
+    var user_data : any = {
+      labels: x_values,
+      datasets: [
+        {
+          data: y_values
+        }
+      ]
+    };
+
+  };
 
   switch (chart_type) {
     case "line":
@@ -66,36 +89,27 @@ const ChartDisplay = ({
           yAxisLabel=""
           yAxisSuffix={y_axis}
           chartConfig={chartConfig}
-          verticalLabelRotation={30}
           style={styles.barChart}
+          fromZero={true}
         />
       );
       break;
-    case "histogram":
-      chart_elem = <View><Text>Histogram Here</Text></View>;
+    case "pie":
+      chart_elem = (
+        <PieChart
+          data={user_data}
+          width={Dimensions.get("window").width}
+          height={220}
+          chartConfig={chartConfig}
+          style={styles.pieChart}
+          accessor="metric_value"
+          paddingLeft="15"
+        />
+
+      );
       break;
     default:
       chart_elem = (
-      //   <LineChart 
-      //   data={{
-      //     labels:["1", "2", "3"],
-      //     datasets: [
-      //       {
-      //         data: [1,2,3]
-      //       }
-      //     ]
-      //   }}
-      //   width={Dimensions.get("window").width} // from react-native
-      //   height={220}
-      //   yAxisLabel=""
-      //   yAxisSuffix={"kg"}
-      //   yAxisInterval={1} // optional, defaults to 1
-      //   chartConfig={chartConfig}
-      //   style={{
-      //     marginVertical: 8,
-      //     borderRadius: 16
-      //   }}
-      // />
 
         <DefaultChart         
           chartConfig={chartConfig}
@@ -125,6 +139,11 @@ const styles = StyleSheet.create({
     borderRadius: 16
   },
   barChart: {
+    marginVertical: 8,
+    borderRadius: 16
+  },
+
+  pieChart: {
     marginVertical: 8,
     borderRadius: 16
   }

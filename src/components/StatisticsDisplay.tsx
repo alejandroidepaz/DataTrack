@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-function median(arr) {
-  var median = "None";
+function median(arr : Array<Number>) {
+  var median = "N/A";
   if (arr.length > 0) {
     var sorted_arr = arr.sort();
     var mid_index = Math.floor(sorted_arr.length / 2);
-
+    console.log(sorted_arr);
     median =
       sorted_arr.length % 2 !== 0
         ? sorted_arr[mid_index]
@@ -17,7 +17,7 @@ function median(arr) {
   return median;
 }
 
-function mode(arr) {
+function mode(arr : Array<Number>) {
   var frequency_map = {};
   var modes = new Set();
   var highest_freq = 0;
@@ -56,13 +56,13 @@ function mean(arr) {
   return mean.toFixed(2);
 }
 
-const StatsDisplay = ({ y_values }) => {
+const StatsDisplay = ({ y_values, chart_type }) => {
   return (
     <View>
       <Text style={styles.title}>Statistical Summary of Data:</Text>
-      <Text style={styles.text}>Mean: {mean(y_values)}</Text>
-      <Text style={styles.text}>Median: {median(y_values)}</Text>
-      <Text style={styles.text}>Mode(s): {mode(y_values)}</Text>
+      <Text style={styles.text}>Mean: { chart_type === "line" ? mean(y_values) : ""}</Text>
+      <Text style={styles.text}>Median: {chart_type === "line" ? median(y_values) : ""}</Text>
+      <Text style={styles.text}>Mode(s): { chart_type === "line" ? mode(y_values) : ""}</Text>
     </View>
   );
 };
